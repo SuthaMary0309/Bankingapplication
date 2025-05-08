@@ -109,6 +109,61 @@ def check_balance():
 
 
 # Transaction History Function============================================================================================
+from datetime import datetime
+
+# Define a class to manage transactions
+class TransactionHistory:
+    def __init__(self):
+        # Initialize an empty list to store transactions
+        self.transactions = []
+
+    def add_transaction(self, amount, transaction_type, description=""):
+        # Add a new transaction to the history
+        if transaction_type not in ['debit', 'credit']:
+            raise ValueError("Transaction type must be 'debit' or 'credit'")
+        
+        transaction = {
+            'date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            'amount': amount,
+            'type': transaction_type,
+            'description': description
+        }
+        
+        self.transactions.append(transaction)
+        print(f"Transaction added: {transaction}")
+
+    def view_transactions(self):
+        # Display all transactions
+        if not self.transactions:
+            print("No transactions available.")
+        else:
+            for transaction in self.transactions:
+                print(f"{transaction['date']} - {transaction['type'].capitalize()} of ${transaction['amount']} - {transaction['description']}")
+
+    def get_balance(self):
+        # Calculate and return the current balance
+        balance = 0
+        for transaction in self.transactions:
+            if transaction['type'] == 'credit':
+                balance += transaction['amount']
+            elif transaction['type'] == 'debit':
+                balance -= transaction['amount']
+        return balance
+
+
+# Usage Example
+history = TransactionHistory()
+
+# Add transactions
+history.add_transaction(1000, 'credit', 'Initial deposit')
+history.add_transaction(200, 'debit', 'Grocery shopping')
+history.add_transaction(50, 'debit', 'Subscription fee')
+
+# View transaction history
+history.view_transactions()
+
+# Get balance
+print(f"Current balance: ${history.get_balance()}")
 
 # def transaction_history():
 
